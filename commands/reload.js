@@ -24,7 +24,7 @@ exports.run = (client, message, args, level) => { //eslint-disable-line no-unuse
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ["r"],
     permLevel: "Bot Admin"
 };
 
@@ -32,5 +32,6 @@ exports.help = {
     name: "reload",
     category: "System",
     description: "Reloads a command that\"s been modified.",
-    usage: "reload [command]"
+    usage: "reload [command]",
+    aliases: ["r"]
 };
