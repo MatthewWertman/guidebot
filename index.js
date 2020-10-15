@@ -19,9 +19,11 @@ const init = async () => {
     const cmdFiles = await readdir("./commands/");
     console.log(`Loading a total of ${cmdFiles.length} commands.`);
     cmdFiles.forEach(f => {
-        if (!f.endsWith(".js")) return;
-        const response = client.loadCommand(f);
-        if (response) console.log(response);
+        const props = require(`./commands/${f}`);
+        client.commands.set(props.help.name, props);
+        props.conf.aliases.forEach(alias => {
+            client.aliases.set(alias, props.help.name);
+        });
     });
     //Events
     const evtFiles = await readdir("./events/");

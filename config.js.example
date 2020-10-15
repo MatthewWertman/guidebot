@@ -19,11 +19,11 @@ const config = {
     },
     { level: 4,
       name: "Server Owner",
-      check: (message) => message.channel.type === "text" ? (message.guild.ownerID === message.author.id ? true : false) : false
+      check: (message) => message.channel.type === "text" ? (message.guild.owner_id === message.author.id ? true : false) : false
     },
     { level: 10,
       name: "Bot Owner",
-      check: (message) => message.client.config.ownerID === message.author.id
+      check: (message) => message.client.config.owner_id === message.author.id
     }
   ]
 };

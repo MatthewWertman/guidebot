@@ -1,4 +1,4 @@
-const config = require("./config.js");
+const config = require("../config.js");
 module.exports = (client, member) => {
     // If welcome is off, don't proceed (don't welcome the user)
     if (config.defaultSettings.welcomeEnabled !== "true") return;

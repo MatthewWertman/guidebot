@@ -11,7 +11,7 @@ module.exports = async (client, message) => {
     const command = args.shift().toLowerCase();
     const level = client.permlevel(message);
     let cmd;
-    if (client.commads.has(command)) {
+    if (client.commands.has(command)) {
         cmd = client.commands.get(command);
     } else if (client.aliases.has(command)) {
         cmd = client.commands.get(client.aliases.get(command));
