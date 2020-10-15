@@ -1,25 +1,36 @@
-exports.run = async (client, message, args, level) => { // eslint-disable-line no-unused-vars
-  if (!args || args.length < 1) return message.reply("Must provide a command to reload. Derp.");
-  const command = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
-  let response = await client.unloadCommand(args[0]);
-  if (response) return message.reply(`Error Unloading: ${response}`);
-
-  response = client.loadCommand(command.help.name);
-  if (response) return message.reply(`Error Loading: ${response}`);
-
-  message.reply(`The command \`${command.help.name}\` has been reloaded`);
+exports.run = (client, message, args, level) => { //eslint-disable-line no-unused-vars
+    let command;
+    if (client.commands.has(args[0])) {
+        command = args[0];
+    } else if (client.aliases.has(args[0])) {
+        command = client.aliases.get(args[0]);
+    }
+    if (!command) {
+        return message.channel.send(`I cannot find the command: ${args[0]}`);
+    } else {
+        message.channel.send(`Reloading: ${command}`)
+            .then(m => {
+                client.reload(command)
+                    .then(() => {
+                        m.edit(`Successfully reloaded: ${command}`);
+                    })
+                    .catch(e => {
+                        m.edit(`Command reload failed: ${command}\n\`\`\`${e.stack}\`\`\``);
+                    });
+            });
+    }
 };
 
 exports.conf = {
-  enabled: true,
-  guildOnly: false,
-  aliases: [],
-  permLevel: "Bot Admin"
+    enabled: true,
+    guildOnly: false,
+    aliases: [],
+    permLevel: "Bot Admin"
 };
 
 exports.help = {
-  name: "reload",
-  category: "System",
-  description: "Reloads a command that\"s been modified.",
-  usage: "reload [command]"
+    name: "reload",
+    category: "System",
+    description: "Reloads a command that\"s been modified.",
+    usage: "reload [command]"
 };
