@@ -1,8 +1,13 @@
-const settings = require("../config.js");
+const config = require("../config.js");
 module.exports = async (client, message) => {
     if (message.author.bot) return;
-    if (message.content.indexOf(settings.prefix) !== 0) return;
-    const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
+    //Returns prefix when pinged.
+    const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
+    if (message.content.match(prefixMention)) {
+        return message.reply(`My prefix on this guild is \`${config.defaultSettings.prefix}\``);
+    }
+    if (message.content.indexOf(config.defaultSettings.prefix) !== 0) return;
+    const args = message.content.slice(config.defaultSettings.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     const level = client.permlevel(message);
     let cmd;
@@ -16,7 +21,7 @@ module.exports = async (client, message) => {
         return message.channel.send("This command is unavailable via private message. Please run this command in a guild.");
 
     if (level < client.levelCache[cmd.conf.permLevel]) {
-        if (settings.systemNotice === "true") {
+        if (config.defaultSettings.systemNotice === "true") {
             return message.channel.send(`You do not have permission to use this command.
   Your permission level is ${level} (${client.config.permLevels.find(l => l.level === level).name})
   This command requires level ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
