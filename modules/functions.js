@@ -104,6 +104,30 @@ module.exports = (client) => {
         }
     });
 
+    // <Number>.formatDuration() returns a duration in dd:hh:mm:ss format
+    // <Number> is treated in milliseconds
+    Object.defineProperty(Number.prototype, "formatDuration", {
+        value: function () {
+            let d = Number(this);
+            const ms = d % 1000;
+            d = (d - ms) / 1000;
+            const secs = d % 60;
+            d = (d - secs) / 60;
+            const mins = d % 60;
+            d = (d - mins) / 60;
+            const hrs = d % 24;
+            const days = (d - hrs) / 24;
+            
+            function pad(n,z) {
+                z = z || 2;
+                return ("00" + n).slice(-z);
+            }
+
+            // dd:hh:mm:ss
+            return pad(days) + ":" + pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
+        }
+    });
+
     // `await client.wait(1000);` to "pause" for 1 second.
     client.wait = require("util").promisify(setTimeout);
 
