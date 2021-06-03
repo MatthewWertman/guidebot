@@ -12,6 +12,10 @@ const client = new Discord.Client({
 client.config = config;
 require("./modules/functions.js")(client);
 
+// Application Owners, useful for Teams and multiple developers.
+// Autofilled by the Ready event by pulling the Bot Application.
+client.owners = [];
+
 const init = async () => {
     //Commands
     client.commands = new Discord.Collection();

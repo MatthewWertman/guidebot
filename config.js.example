@@ -21,9 +21,21 @@ const config = {
       name: "Server Owner",
       check: (message) => message.channel.type === "text" ? (message.guild.owner_id === message.author.id ? true : false) : false
     },
+
+    // Bot Admin has some limited access like rebooting the bot or reloading commands.
+    { level: 9,
+      name: "Bot Admin",
+      check: (message) => config.admins.includes(message.author.id)
+    },
+
+    // This is the bot owner, this should be the highest permission level available.
+    // The reason this should be the highest level is because of dangerous commands such as eval
+    // or exec (if the owner has that).
+    // Updated to utilize the Teams type from the Application, pulls a list of "Owners" from it.
     { level: 10,
       name: "Bot Owner",
-      check: (message) => message.client.config.owner_id === message.author.id
+      // Another simple check, compares the message author id to a list of owners found in the bot application.
+      check: (message) => message.client.owners.includes(message.author.id)
     }
   ]
 };
